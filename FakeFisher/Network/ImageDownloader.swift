@@ -13,7 +13,7 @@ public class ImageDownloader{
     private var session: URLSession
     private var name: String
     
-    init(_ name: String) {
+    public init(_ name: String) {
         if name.isEmpty {
             fatalError("You need to specify a name for the download")
         }
@@ -23,7 +23,7 @@ public class ImageDownloader{
         self.name = name
     }
     
-    func downloadImage(_ urlString: String, completionHandler: @escaping ((Result<Data, FakeFisherError>) -> Void)) -> URLSessionDataTask {
+    public func downloadImage(_ urlString: String, completionHandler: @escaping ((Result<Data, FakeFisherError>) -> Void)) -> URLSessionDataTask {
         let task = session.dataTask(with: URL(string: urlString)!){data, response, error in
             DispatchQueue.main.async {
                 if let data = data{

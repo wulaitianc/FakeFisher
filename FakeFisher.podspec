@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "FakeFisher"
-  spec.version      = "0.1.0"
+  spec.version      = "0.1.1"
   spec.summary      = "FakeFisher provides very simple image cache functionality."
 
   # This description is used to generate tags and improve search results.
@@ -24,8 +24,7 @@ Pod::Spec.new do |spec|
   #   * Try to keep it short, snappy and to the point.
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
-  spec.description  = <<-DESC
-                   DESC
+  spec.description  = "Provides very simple image cache functionality refer to Kingfisher."
 
   spec.homepage     = "http://github.com/wulaitianc/FakeFisher"
   # spec.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"

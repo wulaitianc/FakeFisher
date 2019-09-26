@@ -118,7 +118,7 @@ extension DiskStorage{
         let directoryPath: String?
         let name: String
         
-        init(directoryPath: String? = nil, name: String, expiration: StorageExpiration = .days(7)) {
+        public init(directoryPath: String? = nil, name: String, expiration: StorageExpiration = .days(7)) {
             self.directoryPath = directoryPath
             self.expiration = expiration
             self.name = name

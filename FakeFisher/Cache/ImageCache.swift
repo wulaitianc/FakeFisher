@@ -14,7 +14,7 @@ public class ImageCache{
     private let dispatchQueue: DispatchQueue
     public static let `default` = try! ImageCache("default")
     
-    init(_ urlString: String) throws{
+    public init(_ urlString: String) throws{
         if urlString.isEmpty {
             fatalError("cannot initialize with empty name")
         }
@@ -29,7 +29,7 @@ public class ImageCache{
         diskCache = try DiskStorage.Backend(diskConfig)
     }
     
-    func store(_ image: UIImage,
+    public func store(_ image: UIImage,
                urlString: String,
                expiration: StorageExpiration?,
                completionHandler: ((CacheResult)-> Void)?){
@@ -61,7 +61,7 @@ public class ImageCache{
     /// - Parameter urlString: image url
     /// - Parameter completionHandler: Called when the image retrieved and set finished. This completion handler will be invoked
     /// - Returns: Bool value indicates whether needs to start downloading progress
-    func retrive(_ urlString: String,
+    public func retrive(_ urlString: String,
                  completionHandler: ((UIImage?)-> Void)) throws -> Bool{
         guard !urlString.isEmpty else {
             completionHandler(nil)

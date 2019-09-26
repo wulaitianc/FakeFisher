@@ -95,7 +95,7 @@ extension MemoryStorage{
 }
 
 extension MemoryStorage{
-    class StorageObject<T> {
+    public class StorageObject<T> {
         let value:T
         let key: NSString
         let expiration: StorageExpiration

@@ -12,7 +12,7 @@ import UIKit
 private var dataTaskKey: Void?
 extension FakeFisherWrapper where T: UIImageView{
     
-    func setImage(urlString:String, placeholder: UIImage) {
+    public func setImage(urlString:String, placeholder: UIImage? = nil) {
         do {
             let needsDownload = try ImageCache.default.retrive(urlString, completionHandler: {image in
                 DispatchQueue.main.async {
@@ -49,7 +49,7 @@ extension FakeFisherWrapper where T: UIImageView{
         }
     }
     
-    func cancelDownload(){
+    public func cancelDownload(){
         if let dataTask = objc_getAssociatedObject(self.base, &dataTaskKey) as? URLSessionDataTask {
             dataTask.cancel()
         }
