@@ -27,6 +27,15 @@ public class ImageCache{
         
         let diskConfig = DiskStorage.Config(name: "Disk_Cache_\(urlString)")
         diskCache = try DiskStorage.Backend(diskConfig)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(removeExpired),
+                                               name: UIApplication.didEnterBackgroundNotification,
+                                               object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     public func store(_ image: UIImage,
@@ -82,6 +91,11 @@ public class ImageCache{
         
         completionHandler(nil)
         return true
+    }
+    
+    @objc public func removeExpired(){
+        memoryCache.removeExpired()
+        try? diskCache.removeExpiredFile()
     }
 }
 
