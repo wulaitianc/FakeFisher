@@ -9,10 +9,10 @@
 import UIKit
 
 public class ImageCache{
-    let memoryCache: MemoryStorage.Backend<UIImage>
-    let diskCache: DiskStorage.Backend
-    let dispatchQueue: DispatchQueue
-    static let `default` = try! ImageCache("default")
+    private let memoryCache: MemoryStorage.Backend<UIImage>
+    private let diskCache: DiskStorage.Backend
+    private let dispatchQueue: DispatchQueue
+    public static let `default` = try! ImageCache("default")
     
     init(_ urlString: String) throws{
         if urlString.isEmpty {
