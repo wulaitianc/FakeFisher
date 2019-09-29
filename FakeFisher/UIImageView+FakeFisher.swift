@@ -12,7 +12,7 @@ import UIKit
 private var dataTaskKey: Void?
 extension FakeFisherWrapper where T: UIImageView{
     
-    public func setImage(urlString:String, placeholder: UIImage? = nil) {
+    public func setImage(urlString:String, placeholder: UIImage? = nil, completionHandler: ((Result<UIImage, FakeFisherError>) -> Void)? = nil) {
         do {
             let needsDownload = try ImageCache.default.retrive(urlString, completionHandler: {image in
                 DispatchQueue.main.async {
@@ -21,6 +21,7 @@ extension FakeFisherWrapper where T: UIImageView{
                         return
                     }
                     self.base.image = image
+                    completionHandler?(.success(image))
                 }
             })
             
@@ -36,8 +37,10 @@ extension FakeFisherWrapper where T: UIImageView{
                                 case .failure(let error): print(error);
                                 }
                             }
+                            completionHandler?(.success(image))
                         }
                     case .failure(let error):
+                        completionHandler?(.failure(error))
                         print(error.localizedDescription)
                     }
                     
