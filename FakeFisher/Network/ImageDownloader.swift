@@ -25,7 +25,7 @@ public class ImageDownloader{
     
     public func downloadImage(_ urlString: String, completionHandler: @escaping ((Result<Data, FakeFisherError>) -> Void)) -> URLSessionDataTask {
         let task = session.dataTask(with: URL(string: urlString)!){data, response, error in
-            DispatchQueue.main.async {
+//            DispatchQueue.main.async {
                 if let data = data{
                     completionHandler(.success(data))
                 }else{
@@ -35,7 +35,7 @@ public class ImageDownloader{
                         completionHandler(.failure(.networkError(reason: .unknownError(urlString: urlString))))
                     }
                 }
-            }
+//            }
         }
         
         task.resume()

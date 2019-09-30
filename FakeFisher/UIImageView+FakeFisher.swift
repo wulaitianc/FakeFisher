@@ -15,7 +15,7 @@ extension FakeFisherWrapper where T: UIImageView{
     public func setImage(urlString:String, placeholder: UIImage? = nil, completionHandler: ((Result<UIImage, FakeFisherError>) -> Void)? = nil) {
 
         ImageCache.default.retrive(urlString, completionHandler: {image, needsDownload in
-            DispatchQueue.main.async {
+            DispatchQueue.main.safeAsync {
                 guard let image = image else {
                     self.base.image = placeholder
                     return
@@ -29,16 +29,17 @@ extension FakeFisherWrapper where T: UIImageView{
                     switch result{
                     case .success(let data):
                         if let image = UIImage(data: data) {
-                            self.base.image = image
+                            
                             ImageCache.default.store(image, urlString: urlString, expiration: nil){result in
                                 switch result.diskCacheResult{
                                 case .success(): break
                                 case .failure(let error): print(error);
                                 }
                             }
-                            DispatchQueue.main.async {
-                                completionHandler?(.success(image))
+                            DispatchQueue.main.safeAsync {
+                                self.base.image = image
                             }
+                            completionHandler?(.success(image))
                         }
                     case .failure(let error):
                         completionHandler?(.failure(error))

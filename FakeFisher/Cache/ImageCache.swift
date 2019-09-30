@@ -49,7 +49,7 @@ public class ImageCache{
         guard let data = image.pngData() else {
             if let handler = completionHandler {
                 let result = CacheResult(memoryCacheResult: .success(()), diskCacheResult: .failure(.cacheError(reason: .cannotConvertImageToData(path: urlString))))
-                dispatchQueue.async {
+                dispatchQueue.safeAsync {
                     handler(result)
                 }
             }
@@ -59,7 +59,7 @@ public class ImageCache{
                                             fileName: urlString)
         let isSuccess = diskCache.store(fileData)
         let result = isSuccess ? CacheResult(memoryCacheResult: .success(()), diskCacheResult: .success(())) : CacheResult(memoryCacheResult: .success(()), diskCacheResult: .failure(.cacheError(reason: .cannotSaveFileToDisk(path: urlString))))
-        dispatchQueue.async {
+        dispatchQueue.safeAsync {
             guard let handler = completionHandler else {return}
             handler(result)
         }
@@ -81,7 +81,7 @@ public class ImageCache{
             return
         }
         
-        dispatchQueue.async {
+        dispatchQueue.safeAsync {
             do {
                 if let data = try self.diskCache.getFile(forFileName: urlString){
                     if let image = UIImage(data: data) {
