@@ -68,29 +68,35 @@ public class ImageCache{
     
     /// get image from cache
     /// - Parameter urlString: image url
-    /// - Parameter completionHandler: Called when the image retrieved and set finished. This completion handler will be invoked
-    /// - Returns: Bool value indicates whether needs to start downloading progress
+    /// - Parameter completionHandler: Called when the image retrieved and set finished. This completion handler will be invoked. Bool value indicates whether needs to start downloading progress
     public func retrive(_ urlString: String,
-                 completionHandler: ((UIImage?)-> Void)) throws -> Bool{
+                 completionHandler: @escaping ((UIImage?, Bool)-> Void)){
         guard !urlString.isEmpty else {
-            completionHandler(nil)
-            return false
+            completionHandler(nil, false)
+            return
         }
         
         if let image = memoryCache.value(urlString as NSString){
-            completionHandler(image)
-            return false
+            completionHandler(image, false)
+            return
         }
         
-        if let data = try diskCache.getFile(forFileName: urlString){
-            if let image = UIImage(data: data) {
-                completionHandler(image)
-                return false
+        dispatchQueue.async {
+            do {
+                if let data = try self.diskCache.getFile(forFileName: urlString){
+                    if let image = UIImage(data: data) {
+                        completionHandler(image, false)
+                    }else{
+                        completionHandler(nil, true)
+                    }
+                }else {
+                    completionHandler(nil, true)
+                }
+            }catch {
+                completionHandler(nil, true)
+                print(error)
             }
         }
-        
-        completionHandler(nil)
-        return true
     }
     
     @objc public func removeExpired(){

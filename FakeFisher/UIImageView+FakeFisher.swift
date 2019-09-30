@@ -13,17 +13,16 @@ private var dataTaskKey: Void?
 extension FakeFisherWrapper where T: UIImageView{
     
     public func setImage(urlString:String, placeholder: UIImage? = nil, completionHandler: ((Result<UIImage, FakeFisherError>) -> Void)? = nil) {
-        do {
-            let needsDownload = try ImageCache.default.retrive(urlString, completionHandler: {image in
-                DispatchQueue.main.async {
-                    guard let image = image else {
-                        self.base.image = placeholder
-                        return
-                    }
-                    self.base.image = image
-                    completionHandler?(.success(image))
+
+        ImageCache.default.retrive(urlString, completionHandler: {image, needsDownload in
+            DispatchQueue.main.async {
+                guard let image = image else {
+                    self.base.image = placeholder
+                    return
                 }
-            })
+                self.base.image = image
+                completionHandler?(.success(image))
+            }
             
             if needsDownload {
                 let task = ImageDownloader.default.downloadImage(urlString){result in
@@ -37,7 +36,9 @@ extension FakeFisherWrapper where T: UIImageView{
                                 case .failure(let error): print(error);
                                 }
                             }
-                            completionHandler?(.success(image))
+                            DispatchQueue.main.async {
+                                completionHandler?(.success(image))
+                            }
                         }
                     case .failure(let error):
                         completionHandler?(.failure(error))
@@ -47,9 +48,8 @@ extension FakeFisherWrapper where T: UIImageView{
                 }
                 objc_setAssociatedObject(self.base, &dataTaskKey, task, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             }
-        } catch{
-            print(error.localizedDescription)
-        }
+        })
+        
     }
     
     public func cancelDownload(){
