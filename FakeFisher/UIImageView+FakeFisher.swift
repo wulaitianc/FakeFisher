@@ -13,7 +13,7 @@ private var dataTaskKey: Void?
 extension FakeFisherWrapper where T: UIImageView{
     
     public func setImage(urlString:String, placeholder: UIImage? = nil, completionHandler: ((Result<UIImage, FakeFisherError>) -> Void)? = nil) {
-
+        cancelDownload()
         ImageCache.default.retrive(urlString, completionHandler: {image, needsDownload in
             DispatchQueue.main.safeAsync {
                 guard let image = image else {

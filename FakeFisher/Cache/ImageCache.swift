@@ -12,6 +12,7 @@ public class ImageCache{
     private let memoryCache: MemoryStorage.Backend<UIImage>
     private let diskCache: DiskStorage.Backend
     private let dispatchQueue: DispatchQueue
+    private let processQueue: DispatchQueue
     public static let `default` = try! ImageCache("default")
     
     public init(_ urlString: String) throws{
@@ -20,6 +21,7 @@ public class ImageCache{
         }
         
         dispatchQueue = DispatchQueue(label: "Image_Cache_\(urlString)")
+        processQueue = DispatchQueue(label: "Image_Process_\(urlString)", attributes: .concurrent)
         
         let memory = ProcessInfo.processInfo.physicalMemory
         let memoryConfig = MemoryStorage.Config(totalCostLimit: Int(memory / 4))
@@ -42,26 +44,29 @@ public class ImageCache{
                urlString: String,
                expiration: StorageExpiration?,
                completionHandler: ((CacheResult)-> Void)?){
-        memoryCache.store(image,
-                          key: urlString as NSString,
-                          expiration: expiration)
-        
-        guard let data = image.pngData() else {
-            if let handler = completionHandler {
-                let result = CacheResult(memoryCacheResult: .success(()), diskCacheResult: .failure(.cacheError(reason: .cannotConvertImageToData(path: urlString))))
-                dispatchQueue.safeAsync {
-                    handler(result)
+        processQueue.async {
+            let decodedImage = decode(image: image)
+            self.memoryCache.store(decodedImage,
+                                   key: urlString as NSString,
+                                   expiration: expiration)
+            
+            guard let data = image.pngData() else {
+                if let handler = completionHandler {
+                    let result = CacheResult(memoryCacheResult: .success(()), diskCacheResult: .failure(.cacheError(reason: .cannotConvertImageToData(path: urlString))))
+                    self.dispatchQueue.safeAsync {
+                        handler(result)
+                    }
                 }
+                return  }
+            let fileData = DiskStorage.FileData(value: data,
+                                                expiration: nil,
+                                                fileName: urlString)
+            let isSuccess = self.diskCache.store(fileData)
+            let result = isSuccess ? CacheResult(memoryCacheResult: .success(()), diskCacheResult: .success(())) : CacheResult(memoryCacheResult: .success(()), diskCacheResult: .failure(.cacheError(reason: .cannotSaveFileToDisk(path: urlString))))
+            self.dispatchQueue.safeAsync {
+                guard let handler = completionHandler else {return}
+                handler(result)
             }
-            return  }
-        let fileData = DiskStorage.FileData(value: data,
-                                            expiration: nil,
-                                            fileName: urlString)
-        let isSuccess = diskCache.store(fileData)
-        let result = isSuccess ? CacheResult(memoryCacheResult: .success(()), diskCacheResult: .success(())) : CacheResult(memoryCacheResult: .success(()), diskCacheResult: .failure(.cacheError(reason: .cannotSaveFileToDisk(path: urlString))))
-        dispatchQueue.safeAsync {
-            guard let handler = completionHandler else {return}
-            handler(result)
         }
     }
     
@@ -81,11 +86,13 @@ public class ImageCache{
             return
         }
         
-        dispatchQueue.safeAsync {
+        processQueue.safeAsync {
             do {
                 if let data = try self.diskCache.getFile(forFileName: urlString){
                     if let image = UIImage(data: data) {
-                        completionHandler(image, false)
+                        let decodedImage = decode(image: image)
+                        self.memoryCache.store(decodedImage, key: urlString as NSString, expiration: nil)
+                        completionHandler(decodedImage, false)
                     }else{
                         completionHandler(nil, true)
                     }

@@ -16,6 +16,7 @@
 		4A1AC83823349E2F001CF7B6 /* DiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1AC83723349E2F001CF7B6 /* DiskStorage.swift */; };
 		4A1AC83A2334C29F001CF7B6 /* DiskStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1AC8392334C29F001CF7B6 /* DiskStorageTests.swift */; };
 		4A1AC83C2334C96E001CF7B6 /* FakeFisherError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1AC83B2334C96E001CF7B6 /* FakeFisherError.swift */; };
+		4A53E595254C2CEF00F3E215 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A53E594254C2CEF00F3E215 /* Image.swift */; };
 		4ADE5EF02339E59F00464E22 /* String+MD5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ADE5EEF2339E59F00464E22 /* String+MD5.swift */; };
 		4ADE5EF22339E5CB00464E22 /* FakeFisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ADE5EF12339E5CB00464E22 /* FakeFisher.swift */; };
 		4ADE5EF42339E5DE00464E22 /* UIImageView+FakeFisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ADE5EF32339E5DE00464E22 /* UIImageView+FakeFisher.swift */; };
@@ -46,6 +47,7 @@
 		4A1AC83723349E2F001CF7B6 /* DiskStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskStorage.swift; sourceTree = "<group>"; };
 		4A1AC8392334C29F001CF7B6 /* DiskStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskStorageTests.swift; sourceTree = "<group>"; };
 		4A1AC83B2334C96E001CF7B6 /* FakeFisherError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeFisherError.swift; sourceTree = "<group>"; };
+		4A53E594254C2CEF00F3E215 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		4ADE5EEF2339E59F00464E22 /* String+MD5.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+MD5.swift"; sourceTree = "<group>"; };
 		4ADE5EF12339E5CB00464E22 /* FakeFisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FakeFisher.swift; sourceTree = "<group>"; };
 		4ADE5EF32339E5DE00464E22 /* UIImageView+FakeFisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+FakeFisher.swift"; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 				4ADE5EEF2339E59F00464E22 /* String+MD5.swift */,
 				4A1AC83523332B19001CF7B6 /* HelperExtension.swift */,
 				4A1AC83B2334C96E001CF7B6 /* FakeFisherError.swift */,
+				4A53E594254C2CEF00F3E215 /* Image.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -262,6 +265,7 @@
 				4ADE5EF22339E5CB00464E22 /* FakeFisher.swift in Sources */,
 				4ADE5EF42339E5DE00464E22 /* UIImageView+FakeFisher.swift in Sources */,
 				4ADE5EF72339E60200464E22 /* ImageDownloader.swift in Sources */,
+				4A53E595254C2CEF00F3E215 /* Image.swift in Sources */,
 				4A1AC8312333202A001CF7B6 /* Storage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
