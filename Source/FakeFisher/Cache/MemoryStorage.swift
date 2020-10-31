@@ -22,10 +22,12 @@ public enum MemoryStorage{
             cache.totalCostLimit = config.totalCostLimit
             cache.countLimit = config.countLimit
             
-            cleanTimer = .scheduledTimer(withTimeInterval: config.cleanInterval,
-                                    repeats: true){[weak self] _ in
-                                        guard let self = self else { return }
-                                        self.removeExpired()
+            if #available(iOS 10.0, *) {
+                cleanTimer = .scheduledTimer(withTimeInterval: config.cleanInterval,
+                                             repeats: true){[weak self] _ in
+                                                guard let self = self else { return }
+                                                self.removeExpired()
+                }
             }
         }
         

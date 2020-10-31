@@ -28,7 +28,9 @@ public class FFImageBinder: ObservableObject{
             switch result{
             case .success(let data):
                 if let image = UIImage(data: data) {
-                    self.image = image
+                    DispatchQueue.main.safeAsync {
+                        self.image = image
+                    }
                 }
             case .failure(let error):
                 print(error)
