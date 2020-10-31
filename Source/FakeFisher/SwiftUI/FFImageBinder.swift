@@ -10,6 +10,7 @@
 import SwiftUI
 import Combine
 #endif
+import FakeFisher
 
 @available(iOS 13.0, *)
 public class FFImageBinder: ObservableObject{

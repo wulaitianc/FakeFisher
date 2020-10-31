@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "FakeFisher"
-  spec.version      = "0.1.6"
+  spec.version      = "0.2.1"
   spec.summary      = "FakeFisher provides very simple image cache functionality."
 
   # This description is used to generate tags and improve search results.

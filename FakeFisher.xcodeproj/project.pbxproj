@@ -116,7 +116,7 @@
 		4A1AC807233204EA001CF7B6 = {
 			isa = PBXGroup;
 			children = (
-				4A1AC813233204EA001CF7B6 /* FakeFisher */,
+				4A53E5DC254D489300F3E215 /* Source */,
 				4A1AC81E233204EA001CF7B6 /* FakeFisherTests */,
 				4A53E59C254D2FB200F3E215 /* FakeFisher-SwiftUI */,
 				4A1AC812233204EA001CF7B6 /* Products */,
@@ -204,6 +204,14 @@
 				4A53E5AC254D310500F3E215 /* FFImageBinder.swift */,
 			);
 			path = SwiftUI;
+			sourceTree = "<group>";
+		};
+		4A53E5DC254D489300F3E215 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				4A1AC813233204EA001CF7B6 /* FakeFisher */,
+			);
+			path = Source;
 			sourceTree = "<group>";
 		};
 		4ADE5EF52339E60200464E22 /* Network */ = {
@@ -543,7 +551,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = FakeFisher/Info.plist;
+				INFOPLIST_FILE = Source/FakeFisher/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -572,7 +580,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = FakeFisher/Info.plist;
+				INFOPLIST_FILE = Source/FakeFisher/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
