@@ -30,13 +30,17 @@ public struct FFImage: SwiftUI.View{
                         Image(uiImage: .init())
                     }
                 }
-                .onAppear {self.imageBinder.start()}
-                .onDisappear {self.imageBinder.cancel()}
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                .onDisappear {[weak binder = self.imageBinder] in
+                    binder?.cancel()
+                }
             }else{
                 Image(uiImage: imageBinder.image!)
+                    .resizable()
             }
-            
-            
+        }
+        .onAppear {[weak binder = self.imageBinder] in
+            binder?.start()
         }
     }
     

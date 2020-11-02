@@ -10,7 +10,6 @@
 import SwiftUI
 import Combine
 #endif
-import FakeFisher
 
 @available(iOS 13.0, *)
 public class FFImageBinder: ObservableObject{
@@ -18,24 +17,43 @@ public class FFImageBinder: ObservableObject{
     
     private var downloadTask: URLSessionDataTask?
     private var imageUrl: String
+    private var loaded = false
     
     init(_ url: String) {
         imageUrl = url
     }
     
     func start() {
-        downloadTask = ImageDownloader.default.downloadImage(imageUrl, completionHandler: { (result) in
-            switch result{
-            case .success(let data):
-                if let image = UIImage(data: data) {
-                    DispatchQueue.main.safeAsync {
-                        self.image = image
-                    }
+        guard loaded == false else{return}
+        loaded = true
+        ImageCache.default.retrive(imageUrl) { [weak self] (image, needDownload) in
+            guard let self = self else {return}
+            if let image = image{
+                DispatchQueue.main.safeAsync {
+                    self.image = image
                 }
-            case .failure(let error):
-                print(error)
             }
-        })
+            if needDownload{
+                self.downloadTask = ImageDownloader.default.downloadImage(self.imageUrl, completionHandler: {[weak self] (result) in
+                    guard let self = self else {return}
+                    self.downloadTask = nil
+                    switch result{
+                    case .success(let data):
+                        if let image = UIImage(data: data) {
+                            DispatchQueue.main.safeAsync {
+                                self.image = image
+                            }
+                            ImageCache.default.store(image, urlString: self.imageUrl, expiration: nil) { (result) in
+                                
+                            }
+                        }
+                    case .failure(let error):
+                        self.loaded = false
+                        print(error)
+                    }
+                })
+            }
+        }
     }
     
     func cancel() {
