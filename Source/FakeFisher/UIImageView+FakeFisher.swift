@@ -38,11 +38,14 @@ extension FakeFisherWrapper where T: UIImageView{
                             }
                             DispatchQueue.main.safeAsync {
                                 self.base.image = image
+                                completionHandler?(.success(image))
                             }
-                            completionHandler?(.success(image))
+                            
                         }
                     case .failure(let error):
-                        completionHandler?(.failure(error))
+                        DispatchQueue.main.safeAsync {
+                            completionHandler?(.failure(error))
+                        }
                         print(error.localizedDescription)
                     }
                     
